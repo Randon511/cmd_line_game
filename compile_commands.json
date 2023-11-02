@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/Randon/Desktop/Projects/cmd_line_game",
+  "command": "C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe -o CMakeFiles\\cmd_line_game.dir\\main.cpp.obj -c C:\\Users\\Randon\\Desktop\\Projects\\cmd_line_game\\main.cpp",
+  "file": "C:\\Users\\Randon\\Desktop\\Projects\\cmd_line_game\\main.cpp",
+  "output": "CMakeFiles\\cmd_line_game.dir\\main.cpp.obj"
+}
+]
