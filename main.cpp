@@ -1,38 +1,47 @@
 #include <Windows.h>
 #include <stdio.h>
 
-int windowWidth = 120;
-int windowHeight = 40;
+short windowWidth = 120;
+short windowHeight = 40;
 
-int main() {
+int main()
+{
 
-  FreeConsole();
-  AllocConsole();
+    FreeConsole();
+    AllocConsole();
 
-  // Create buffer for console text
-  char *screen = new char[windowWidth * windowHeight];
-  // Create console handle
-  HANDLE console = CreateConsoleScreenBuffer(
-      GENERIC_READ | GENERIC_WRITE, false, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-  // Set active buffer to our created console
-  SetConsoleActiveScreenBuffer(console);
+    // Create buffer for console text
+    wchar_t *screen = new wchar_t[(windowWidth * windowHeight) + 1];
+    // Create console handle
+    HANDLE console = CreateConsoleScreenBuffer(
+        GENERIC_READ | GENERIC_WRITE,
+        false,
+        NULL,
+        CONSOLE_TEXTMODE_BUFFER,
+        NULL);
+    // Set active buffer to our created console
+    SetConsoleActiveScreenBuffer(console);
 
-  SMALL_RECT consoleSize = {0, 0, 159, 59};
-  SetConsoleWindowInfo(console, true, &consoleSize);
+    COORD coord = {windowWidth, windowHeight};
+    SetConsoleScreenBufferSize(console, coord);
+    SMALL_RECT consoleSize = {0};
+    consoleSize.Right = coord.X - 1;
+    consoleSize.Bottom = coord.Y - 1;
+    SetConsoleWindowInfo(console, true, &consoleSize);
 
-  DWORD bytesWritten = 0;
-  while (1) {
-    for (int i = 0; i < windowWidth - 1; i++) {
-      for (int j = 0; j < windowHeight - 1; j++) {
-        screen[i * j] = '#';
-      }
+    DWORD bytesWritten = 0;
+    while (1)
+    {
+        for (int i = 0; i < (windowWidth * windowHeight); i++)
+        {
+            screen[i] = '#';
+        }
+        screen[windowWidth * windowHeight] = '\0';
+        WriteConsoleOutputCharacterW(
+            console, screen, windowWidth * windowHeight, {0, 0}, &bytesWritten);
     }
-    screen[windowWidth * windowHeight - 1] = '\0';
-    WriteConsoleOutputCharacter(console, screen, windowWidth * windowHeight,
-                                {0, 0}, &bytesWritten);
-  }
 
-  FreeConsole();
+    FreeConsole();
 
-  return 0;
+    return 0;
 }
